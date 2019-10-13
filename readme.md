@@ -40,6 +40,8 @@ Launch http://localhost:5000/. Success should show “Hello world” on the page
 
 To deploy this endpoint to Heroku: `git push heroku master`
 
+If deployment comes up with errors, check for failed build logs in Heroku Dashboard > app_name > Activity. Click on View build log.
+
 Check success of deployment: `heroku open`
 
 

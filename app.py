@@ -50,7 +50,7 @@ def webhook():
 
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
-                    send_message(sender_id, "roger that!")
+                    send_message(sender_id, "default response uwu")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -81,7 +81,18 @@ def send_message(recipient_id, message_text):
         },
         "message": {
             "text": message_text
-        }
+        },
+        "quick_replies": [
+            {
+                "content_type": "text",
+                "title": "test1",
+                "payload": "test1"
+            }, {
+                "content_type": "text",
+                "title": "test2",
+                "payload": "test2"
+            }
+        ]
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -92,7 +103,7 @@ def send_message(recipient_id, message_text):
 def mark_message_read(recipient_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
-    log("activating sender_action to {recipient}".format(recipient=recipient_id))
+    log(" === DEBUG: Marking message as read ===")
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -115,7 +126,7 @@ def mark_message_read(recipient_id):
 def response_in_progress(recipient_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
-    log("activating sender_action to {recipient}".format(recipient=recipient_id))
+    log("=== DEBUG: Sending ... chat bubble to user ===")
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -141,7 +152,7 @@ def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
             msg = json.dumps(msg)
         else:
             msg = unicode(msg).format(*args, **kwargs)
-        print(u"{}: {}".format(datetime.now(), msg))
+        print(u"DEBUGGING {}: {}".format(datetime.now(), msg))
     except UnicodeEncodeError:
         pass  # squash logging errors in case of non-ascii text
     sys.stdout.flush()

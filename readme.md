@@ -32,8 +32,8 @@ Run `heroku create`
 Check remote Heroku repositories were set: `git remote -v`
 Go to Heroku Dashboard and update the name to something that makes more sense:
 Then run:
-`git remote rm heroku
-heroku git:remote -a newname`
+`git remote rm heroku`
+`heroku git:remote -a newname`
 
 To add local repository to existing Heroku app:
 `heroku git:remote -a floating-taiga-21700`

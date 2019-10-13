@@ -48,7 +48,8 @@ def webhook():
                         message_body = messaging_event["message"]["quick_reply"]["payload"]
                         message_type = "quick_reply"
 
-                    sender_action(sender_id)
+                    mark_message_read(recipient_id)
+                    response_in_progress(recipient_id)
                     send_message(sender_id, "roger that!")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -80,7 +81,7 @@ def send_message(recipient_id, message_text):
         },
         "message": {
             "text": message_text
-        },
+        }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -88,7 +89,7 @@ def send_message(recipient_id, message_text):
         log(r.text)
 
 
-def sender_action(recipient_id):
+def mark_message_read(recipient_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
     log("activating sender_action to {recipient}".format(recipient=recipient_id))
@@ -103,10 +104,30 @@ def sender_action(recipient_id):
         "recipient": {
             "id": recipient_id
         },
-        "sender_action": {
-            "typing_on": True,
-            "mark_seen": True
-        }
+        "sender_action": "mark_seen"
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
+
+def response_in_progress(recipient_id):
+    # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+
+    log("activating sender_action to {recipient}".format(recipient=recipient_id))
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "sender_action": "typing_on"
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:

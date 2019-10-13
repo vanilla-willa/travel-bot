@@ -1,11 +1,47 @@
 # Facebook Messenger Bot
-This is a simple python template that uses Flask to build a webhook for Facebook's Messenger Bot API.
+Python template using Flask to build webhook for Facebook's Messenger Bot API cloned from https://github.com/hartleybrody/fb-messenger-bot.
 
-Read more in my [tutorial that uses this repository](https://blog.hartleybrody.com/fb-messenger-bot/).
+Tutorial from https://blog.hartleybrody.com/fb-messenger-bot/.
 
-*New:* [Check out my Facebook Messenger Bot Course](https://facebook-messenger-bot.teachable.com/p/facebook-messenger-bot/). It walks you through the process of getting this bot hosted on heroku step-by-step, and also unlocks all the content that's hidden in this repo's branches.
+# "Instructions"
 
-## "Callback verification failed"
+Work with a virtual environment.
+
+`git clone https://github.com/hartleybrody/fb-messenger-bot`
+
+`pip install -r requirements.txt`
+
+Create a Heroku account, if it doesn't already exist.
+
+Install Heroku CLI Toolbelt using Homebrew: `brew tap heroku/brew && brew install heroku`
+Otherwise, follow: https://devcenter.heroku.com/articles/heroku-cli
+
+Track changes in git
+`git init`
+`git add`
+`git commit -m "initial commit"`
+
+See compatible python runtimes: https://devcenter.heroku.com/articles/python-support#supported-runtimes
+At the time of writing, Heroku deployment with Python only allowed python-3.7.4, python-3.6.9, python-2.7.16. 
+Current webhook requirement uses wsgiref==0.1.2, which is not compatible with python3. 
+Update runtime.txt to the latest python2 support: `python-2.7.16`.
+
+Creating Heroku remotes: https://devcenter.heroku.com/articles/git
+To create a new Heroku app
+Run `heroku create`
+Check remote Heroku repositories were set: `git remote -v`
+
+To add local repository to existing Heroku app:
+`heroku git:remote -a floating-taiga-21700`
+
+To verify that Heroku can run things locally on your machine, start your local server with: `heroku local`
+
+Launch http://localhost:5000/. Success should show “Hello world” on the page. Kill the local server with Ctrl+C. 
+
+To deploy this endpoint to Heroku: `git push heroku master`
+
+Check success of deployment: `heroku open`
+
 
 ![Facebook Error](https://cloud.githubusercontent.com/assets/18402893/21538944/f96fcd1e-cdc7-11e6-83ee-a866190d9080.png)
 

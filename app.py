@@ -48,8 +48,8 @@ def webhook():
                         message_body = messaging_event["message"]["quick_reply"]["payload"]
                         message_type = "quick_reply"
 
-                    mark_message_read(recipient_id)
-                    response_in_progress(recipient_id)
+                    mark_message_read(sender_id)
+                    response_in_progress(sender_id)
                     send_message(sender_id, "roger that!")
 
                 if messaging_event.get("delivery"):  # delivery confirmation

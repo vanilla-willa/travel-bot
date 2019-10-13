@@ -23,13 +23,17 @@ Track changes in git
 
 See compatible python runtimes: https://devcenter.heroku.com/articles/python-support#supported-runtimes
 At the time of writing, Heroku deployment with Python only allowed python-3.7.4, python-3.6.9, python-2.7.16. 
-Current webhook requirement uses wsgiref==0.1.2, which is not compatible with python3. 
+Current webhook requirement uses wsgiref==0.1.2, which is not compatible with python3. See https://github.com/skoczen/will/issues/148
 Update runtime.txt to the latest python2 support: `python-2.7.16`.
 
 Creating Heroku remotes: https://devcenter.heroku.com/articles/git
-To create a new Heroku app
+To create a new Heroku app (assigns a randomized name)
 Run `heroku create`
 Check remote Heroku repositories were set: `git remote -v`
+Go to Heroku Dashboard and update the name to something that makes more sense:
+Then run:
+`git remote rm heroku
+heroku git:remote -a newname`
 
 To add local repository to existing Heroku app:
 `heroku git:remote -a floating-taiga-21700`

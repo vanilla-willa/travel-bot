@@ -39,12 +39,12 @@ def webhook():
 
                     # TODO: validate payload
                     # Generate a SHA1 signature using the payload and your app's App Secret.
-                    # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=). If the signatures match, the payload is genuine.
+                    # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=).
+                    # If the signatures match, the payload is genuine.
 
                     sender_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
-                    log(messaging_event)
                     if messaging_event["message"].get("text"):  # user sent a text message
                         message = messaging_event["message"].get("text")
                         message_type = "text"
@@ -55,11 +55,12 @@ def webhook():
 
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
+                    print("Message is ", message)
 
                     # responses = process_message(message, message_type)
                     # for resp in responses:
                     # msg = create_quick_reply_options(resp)
-                    send_message(sender_id, message)
+                    send_message(sender_id, "default response uwu")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass

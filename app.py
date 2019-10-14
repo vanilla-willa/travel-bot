@@ -166,7 +166,7 @@ def response_in_progress(recipient_id):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print(str(message))
+    print("=== DEBUG MSG: " + str(message) + " ===")
     sys.stdout.flush()
 
 # def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku

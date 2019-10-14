@@ -106,8 +106,8 @@ def send_message(recipient_id, message_text):
                 "content_type": "text",
                 "title": "test1",
                 "payload": "test1"
-            },{
-                "content_type":"text",
+            }, {
+                "content_type": "text",
                 "title": "testw",
                 "payload": "test2"
               }
@@ -167,7 +167,7 @@ def response_in_progress(recipient_id):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print("=== DEBUG MSG: " + str(message) + " ===")
+    print("=== DEBUG MSG:: {} ===".format(message))
     sys.stdout.flush()
 
 # def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku

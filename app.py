@@ -2,8 +2,7 @@ import os
 import sys
 import json
 from datetime import datetime
-# from brain import process_message
-
+from brain import process_message
 import requests
 from flask import Flask, request
 
@@ -26,6 +25,7 @@ def verify():
 def webhook():
 
     # endpoint for processing incoming messaging events
+    # TODO: implement greeting message and get started button
 
     data = request.get_json()
     log(data)  # you may not want to log every incoming message in production, but it's good for testing
@@ -42,6 +42,7 @@ def webhook():
                     # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=).
                     # If the signatures match, the payload is genuine.
 
+                    log(messaging_event)
                     sender_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
@@ -49,18 +50,20 @@ def webhook():
                         message = messaging_event["message"].get("text")
                         message_type = "text"
 
-                    if messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+                    elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+                        # message_payload will be the same as the text
                         message = messaging_event["message"]["quick_reply"]["payload"]
                         message_type = "quick_reply"
 
+                    else:
+                        send_message(sender_id, "Sorry. "
+                                                "I currently do not support anything beyond text and quick reply")
+
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
-                    print("Message is ", message)
 
-                    # responses = process_message(message, message_type)
-                    # for resp in responses:
-                    # msg = create_quick_reply_options(resp)
-                    send_message(sender_id, "default response uwu")
+                    msg_data = process_message(message_type, message)
+                    send_message(sender_id, msg_data)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -74,21 +77,11 @@ def webhook():
     return "ok", 200
 
 
-def create_quick_reply_options(response):
-
-    if type(response) == dict and "quick_replies" in response.keys():
-        buttons = [dict(content_type="text", title=b["label"], payload=b["value"]) for b in response["quick_replies"]]
-        return dict(text=response["text"], quick_replies=buttons)
-
-    else:
-        print(response)
-        raise Exception("Don't know how to send a message like that")
-
-
-def send_message(recipient_id, message_text):
+def send_message(recipient_id, message):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+    # message parameter will contain both text and quick response
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -100,19 +93,20 @@ def send_message(recipient_id, message_text):
         "recipient": {
             "id": recipient_id
         },
-        "message": {
-            "text": message_text,
-            "quick_replies": [{
-                "content_type": "text",
-                "title": "test1",
-                "payload": "test1"
-            }, {
-                "content_type": "text",
-                "title": "testw",
-                "payload": "test2"
-              }
-            ]
-        }
+        "message": message
+        # {
+        #     "text": message,
+        #     "quick_replies": [{
+        #         "content_type": "text",
+        #         "title": "test1",
+        #         "payload": "test1"
+        #     }, {
+        #         "content_type": "text",
+        #         "title": "testw",
+        #         "payload": "test2"
+        #       }
+        #     ]
+        # }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -167,19 +161,8 @@ def response_in_progress(recipient_id):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print("=== DEBUG MSG:: {} ===".format(message))
+    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
     sys.stdout.flush()
-
-# def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
-#     try:
-#         if type(msg) is dict:
-#             msg = json.dumps(msg)
-#         else:
-#             msg = unicode(msg).format(*args, **kwargs)
-#         print(u" === DEBUG {}: {} ===".format(datetime.now(), msg))
-#     except UnicodeEncodeError:
-#         pass  # squash logging errors in case of non-ascii text
-#     sys.stdout.flush()
 
 
 if __name__ == '__main__':

@@ -5,7 +5,8 @@ Tutorial from https://blog.hartleybrody.com/fb-messenger-bot/.
 
 # "Instructions"
 
-Work with a virtual environment.
+Create virtual environment: `python3 -m venv venv`
+Activate the virtual environment: `source venv/bin/activate`
 
 `git clone https://github.com/hartleybrody/fb-messenger-bot`
 

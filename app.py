@@ -55,10 +55,10 @@ def webhook():
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
 
-                    responses = process_message(message, message_type)
-                    for resp in responses:
-                        msg = create_quick_reply_options(resp)
-                        send_message(sender_id, msg)
+                    # responses = process_message(message, message_type)
+                    # for resp in responses:
+                    # msg = create_quick_reply_options(resp)
+                    send_message(sender_id, message)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -98,16 +98,17 @@ def send_message(recipient_id, message_text):
         "recipient": {
             "id": recipient_id
         },
+        "messaging_type": "RESPONSE",
         "message": {
             "text": message_text,
             "quick_replies": [{
                 "content_type": "text",
-                "title": "Red",
-                "payload": "<POSTBACK_PAYLOAD>"
+                "title": "test1",
+                "payload": "test1"
             },{
                 "content_type":"text",
-                "title": "Green",
-                "payload": "<POSTBACK_PAYLOAD>"
+                "title": "testw",
+                "payload": "test2"
               }
             ]
         }

@@ -99,7 +99,6 @@ def send_message(recipient_id, message_text):
         "recipient": {
             "id": recipient_id
         },
-        "messaging_type": "RESPONSE",
         "message": {
             "text": message_text,
             "quick_replies": [{

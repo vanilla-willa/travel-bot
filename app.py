@@ -44,6 +44,7 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
+                    log(messaging_event)
                     if messaging_event["message"].get("text"):  # user sent a text message
                         message = messaging_event["message"].get("text")
                         message_type = "text"

@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from datetime import datetime
+from brain import process_message
 
 import requests
 from flask import Flask, request
@@ -40,17 +41,24 @@ def webhook():
                     # Generate a SHA1 signature using the payload and your app's App Secret.
                     # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=). If the signatures match, the payload is genuine.
 
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
+                    sender_id = messaging_event["sender"]["id"]        # user's facebook ID
+                    recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
-                    if messaging_event["message"].get("quick_reply"):  # they sent a quick reply
-                        message_body = messaging_event["message"]["quick_reply"]["payload"]
+                    if messaging_event["message"].get("text"):  # user sent a text message
+                        message = messaging_event["message"].get("text")
+                        message_type = "text"
+
+                    if messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+                        message = messaging_event["message"]["quick_reply"]["payload"]
                         message_type = "quick_reply"
 
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
-                    send_message(sender_id, "default response uwu")
+
+                    responses = process_message(message, message_type)
+                    for resp in responses:
+                        msg = create_quick_reply_options(resp)
+                        send_message(sender_id, msg)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -62,6 +70,17 @@ def webhook():
                     pass
 
     return "ok", 200
+
+
+def create_quick_reply_options(response):
+
+    if type(response) == dict and "quick_replies" in response.keys():
+        buttons = [dict(content_type="text", title=b["label"], payload=b["value"]) for b in response["quick_replies"]]
+        return dict(text=response["text"], quick_replies=buttons)
+
+    else:
+        print(response)
+        raise Exception("Don't know how to send a message like that")
 
 
 def send_message(recipient_id, message_text):
@@ -80,19 +99,18 @@ def send_message(recipient_id, message_text):
             "id": recipient_id
         },
         "message": {
-            "text": message_text
-        },
-        "quick_replies": [
-            {
+            "text": message_text,
+            "quick_replies": [{
                 "content_type": "text",
-                "title": "test1",
-                "payload": "test1"
-            }, {
-                "content_type": "text",
-                "title": "test2",
-                "payload": "test2"
-            }
-        ]
+                "title": "Red",
+                "payload": "<POSTBACK_PAYLOAD>"
+            },{
+                "content_type":"text",
+                "title": "Green",
+                "payload": "<POSTBACK_PAYLOAD>"
+              }
+            ]
+        }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -103,7 +121,7 @@ def send_message(recipient_id, message_text):
 def mark_message_read(recipient_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
-    log(" === DEBUG: Marking message as read ===")
+    log("Marking message as read")
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -126,7 +144,7 @@ def mark_message_read(recipient_id):
 def response_in_progress(recipient_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
-    log("=== DEBUG: Sending ... chat bubble to user ===")
+    log("Sending ... chat bubble to user")
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -152,7 +170,7 @@ def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
             msg = json.dumps(msg)
         else:
             msg = unicode(msg).format(*args, **kwargs)
-        print(u"DEBUGGING {}: {}".format(datetime.now(), msg))
+        print(u" === DEBUG {}: {} ===".format(datetime.now(), msg))
     except UnicodeEncodeError:
         pass  # squash logging errors in case of non-ascii text
     sys.stdout.flush()

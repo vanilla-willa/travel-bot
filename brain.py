@@ -13,7 +13,6 @@ def process_message(message_type, message):
     """
 
     response = {}
-    quick_reply_list = []
 
     # if message in text_outputs.keys():
     #     responses.append(dict(
@@ -24,7 +23,7 @@ def process_message(message_type, message):
     if message in consts.GREETINGS:
         response.update(dict(text=consts.TEXT_OUTPUTS["start"]))
         log("Updated to response dict. Currently looks like: {}".format(response))
-        quick_reply_list.append(dict(content_type="text", title=opt, payload=opt) for opt in consts.INITIAL)
+        quick_reply_list = list(dict(content_type="text", title=opt, payload=opt) for opt in consts.INITIAL)
         response.update(dict(quick_replies=quick_reply_list))
         log("Updated to response dict. Currently looks like: {}".format(response))
 

@@ -42,7 +42,7 @@ def webhook():
                     # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=).
                     # If the signatures match, the payload is genuine.
 
-                    log(messaging_event)
+                    # log(messaging_event)
                     sender_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
@@ -56,8 +56,8 @@ def webhook():
                         message_type = "quick_reply"
 
                     else:
-                        send_message(sender_id, "Sorry. "
-                                                "I currently do not support anything beyond text and quick reply")
+                        send_message(sender_id, dict(text="Sorry. I currently do not support anything beyond "
+                                                          "text and quick reply"))
 
                     mark_message_read(sender_id)
                     response_in_progress(sender_id)
@@ -80,8 +80,9 @@ def webhook():
 def send_message(recipient_id, message):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
     # message parameter will contain both text and quick response
+    bot_text = message.get("text")
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=bot_text))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -102,7 +103,7 @@ def send_message(recipient_id, message):
         #         "payload": "test1"
         #     }, {
         #         "content_type": "text",
-        #         "title": "testw",
+        #         "title": "test2",
         #         "payload": "test2"
         #       }
         #     ]

@@ -9,7 +9,7 @@ import json
 class Brain:
 
     def __init__(self, user_id):
-        self.user_id
+        self.user_id = user_id
 
     def determine_message_type(self, messaging_event):
         if messaging_event["message"].get("text"):  # user sent a text message

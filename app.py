@@ -1,7 +1,6 @@
 import os
 import sys
 from datetime import datetime
-# from brain import Brain
 from brain import process_message
 from flask import Flask, request
 import requests
@@ -42,27 +41,28 @@ def webhook():
                     # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=).
                     # If the signatures match, the payload is genuine.
 
-                    sender_id = messaging_event["sender"]["id"]        # user's facebook ID
+                    user_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
-                    if messaging_event["message"].get("text"):  # user sent a text message
-                        message = messaging_event["message"].get("text")
-                        message_type = "text"
+                    # if messaging_event["message"].get("text"):  # user sent a text message
+                    #     message = messaging_event["message"].get("text")
+                    #     message_type = "text"
+                    #
+                    # elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+                    #     # message_payload will be the same as the text
+                    #     message = messaging_event["message"]["quick_reply"]["payload"]
+                    #     message_type = "quick_reply"
+                    #
+                    # else:
+                    #     send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
+                    #                                       "text and quick reply"))
 
-                    elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
-                        # message_payload will be the same as the text
-                        message = messaging_event["message"]["quick_reply"]["payload"]
-                        message_type = "quick_reply"
+                    mark_message_read(user_id)
+                    typing(user_id)
 
-                    else:
-                        send_message(sender_id, dict(text="Sorry. I currently do not support anything beyond "
-                                                          "text and quick reply"))
-
-                    mark_message_read(sender_id)
-                    response_in_progress(sender_id)
-
-                    msg_data = process_message(message_type, message)
-                    send_message(sender_id, msg_data)
+                    # msg_data = process_message(message_type, message)
+                    # send_message(user_id, msg_data)
+                    send_message(user_id, "hello!")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -73,12 +73,13 @@ def webhook():
     return "ok", 200
 
 
-def send_message(recipient_id, message):
+def send_message(user_id, message):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
     # message parameter will contain both text and quick response
-    bot_text = message.get("text")
+    # bot_text = message.get("text")
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=bot_text))
+    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=bot_text))
+    log("sending message to {recipient}".format(recipient=user_id))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -88,7 +89,7 @@ def send_message(recipient_id, message):
     }
     data = json.dumps({
         "recipient": {
-            "id": recipient_id
+            "id": user_id
         },
         "message": message
         # {
@@ -111,7 +112,7 @@ def send_message(recipient_id, message):
         log(r.text)
 
 
-def mark_message_read(recipient_id):
+def mark_message_read(user_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
     log("Marking message as read")
@@ -124,7 +125,7 @@ def mark_message_read(recipient_id):
     }
     data = json.dumps({
         "recipient": {
-            "id": recipient_id
+            "id": user_id
         },
         "sender_action": "mark_seen"
     })
@@ -134,7 +135,7 @@ def mark_message_read(recipient_id):
         log(r.text)
 
 
-def response_in_progress(recipient_id):
+def typing(user_id):
     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
     log("Sending ... chat bubble to user")
@@ -147,7 +148,7 @@ def response_in_progress(recipient_id):
     }
     data = json.dumps({
         "recipient": {
-            "id": recipient_id
+            "id": user_id
         },
         "sender_action": "typing_on"
     })
@@ -157,7 +158,7 @@ def response_in_progress(recipient_id):
         log(r.text)
 
 
-def log(message):  # simple wrapper for logging to stdout on heroku
+def log(message):
     print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
     sys.stdout.flush()
 

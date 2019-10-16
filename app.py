@@ -50,7 +50,6 @@ def webhook():
                         return "ok", 200
 
                     message = decision.read_message_text(user_id, messaging_event)
-
                     msg_data = decision.process_message(user_id, message_type, message)
                     decision.send_message(msg_data)
 

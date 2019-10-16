@@ -13,7 +13,7 @@ CITIES_AND_DATES = {
 }
 
 TEXT_OUTPUTS = {
-    "start": "Hi, I am willa. I'm here to retrieve information about your lodging plans.",
+    "start": "Hi, my name is 流浪狗. I'm here to retrieve information about your lodging plans.",
     "location": "Select your location.",
     "info": "What info would you like?",
     "selection": "You selected ____.",

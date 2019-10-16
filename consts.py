@@ -14,7 +14,7 @@ CITIES_AND_DATES = {
 
 TEXT_OUTPUTS = {
     "start": "Hi, my name is {}. I'm here to retrieve information "
-             "about your lodging plans.".format(u'流浪狗'.encode('utf-8')),
+             "about your lodging plans.".format(u'流浪狗'),
     "location": "Select your location.",
     "info": "What info would you like?",
     "selection": "You selected ____.",

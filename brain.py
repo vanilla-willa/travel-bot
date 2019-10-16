@@ -1,11 +1,16 @@
 import sys
 import consts
 from datetime import datetime
+from graph import Graph
 
+
+def create_graph():
+    test = Graph()
 
 def process_message(message_type, message):
     """
     User input of either text or quick reply returns additional text and quick reply
+    Payload from quick reply lets you know which button was clicked
     :param message: either text or payload
     :param message_type: either text or quick_reply
     :return: dict with text and quick_reply
@@ -31,5 +36,5 @@ def process_message(message_type, message):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
+    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), unicode(message)))
     sys.stdout.flush()

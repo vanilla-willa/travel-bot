@@ -34,7 +34,7 @@ def webhook():
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-
+                log("printing out messaging event: {}".format(messaging_event))
                 if messaging_event.get("message"):  # someone sent us a message
 
                     # TODO: validate payload
@@ -42,7 +42,6 @@ def webhook():
                     # Compare your signature to the signature in the X-Hub-Signature header (everything after sha1=).
                     # If the signatures match, the payload is genuine.
 
-                    # log(messaging_event)
                     sender_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
@@ -66,10 +65,8 @@ def webhook():
                     send_message(sender_id, msg_data)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
-                    pass
 
-                if messaging_event.get("optin"):  # optin confirmation
-                    pass
+                    log()
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass
@@ -162,7 +159,7 @@ def response_in_progress(recipient_id):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
+    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), unicode(message)))
     sys.stdout.flush()
 
 

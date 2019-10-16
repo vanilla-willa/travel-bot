@@ -9,6 +9,7 @@ import json
 class Brain:
 
     def __init__(self):
+        self.is_quick_reply = False
         pass
 
     def determine_message_type(self, user_id, messaging_event):
@@ -16,6 +17,7 @@ class Brain:
             return "text"
 
         elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+            self.is_quick_reply = True
             return "quick_reply"
 
         else:
@@ -23,24 +25,32 @@ class Brain:
                                                  "text and quick reply"))
             return None
 
-    def read_message_text(self, user_id, messaging_event):
-        if self.determine_message_type(user_id, messaging_event) == "text":
-            return messaging_event["message"].get("text")
+    def read_message_text(self, message_type, messaging_event):
+        if not self.is_quick_reply:
+            message = messaging_event["message"].get("text")
+            self.log(message)
+            return [message]
         else:
-            return messaging_event["message"]["quick_reply"]["payload"]
+            message = messaging_event["message"]["quick_reply"]["text"]
+            payload = messaging_event["message"]["quick_reply"]["payload"]
+            self.log("message: {}, payload: {} ".format(message, payload))
+            return [message, payload]
 
-    def process_message(self, user_id, message_type, message):
+    def process_message(self, user_id, message_properties):
         """
         User input of either text or quick reply returns additional text and quick reply
         Payload from quick reply lets you know which button was clicked
         :param user_id: string
-        :param message: either text or payload
-        :param message_type: either text or quick_reply
+        :param message_properties: list of length 1 or 2, depending on text or quick reply, respectively
         :return: dict with text and quick_reply
         quick_reply is a list of dicts
         """
         self.typing(user_id)
         response = {}
+
+        message = message_properties[0]
+        if len(message_properties) > 1:
+            payload = message_properties[1]
 
         if message in consts.GREETINGS:
             response.update(dict(text=consts.TEXT_OUTPUTS["start"]))

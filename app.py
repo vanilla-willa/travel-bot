@@ -48,8 +48,8 @@ def webhook():
                     if message_type is None:
                         return "ok", 200
 
-                    message = decision.read_message_text(user_id, messaging_event)
-                    msg_data = decision.process_message(user_id, message_type, message)
+                    message_properties = decision.read_message_text(messaging_event)
+                    msg_data = decision.process_message(user_id, message_properties)
                     decision.send_message(user_id, msg_data)
 
                     # DEBUGGING

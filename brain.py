@@ -53,11 +53,18 @@ class Brain:
             payload = message_properties[1]
 
         if message in consts.GREETINGS:
-            response.update(dict(text=consts.TEXT_OUTPUTS["start"]))
-            self.log("Updated to response dict. Currently looks like: {}".format(response))
-            quick_reply_list = list(dict(content_type="text", title=city, payload=city) for city in consts.DATA.keys())
+            response.update(dict(text=consts.BOT_MSGS["start"]))
+            # self.log("Updated to response dict. Currently looks like: {}".format(response))
+            quick_reply_list = list(dict(content_type="text", title=city, payload="city") for city in consts.DATA.keys())
             response.update(dict(quick_replies=quick_reply_list))
-            self.log("Updated to response dict. Currently looks like: {}".format(response))
+            # self.log("Updated to response dict. Currently looks like: {}".format(response))
+
+        elif self.is_quick_reply:
+            if payload is "city":
+                response.update(dict(text=consts.BOT_MSGS["info"]))
+                quick_reply_list = list(dict(content_type="text", title=info, payload = "info")
+                                        for city in consts.DATA.keys() for info in consts.DATA[city].keys())
+                response.update(dict(quick_replies=quick_reply_list))
 
         return response
 

@@ -2,6 +2,7 @@ import os
 import sys
 from datetime import datetime
 from brain import Brain
+from brain import process_message
 from flask import Flask, request
 import requests
 import json

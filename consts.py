@@ -36,5 +36,29 @@ DATA = {
             "url": "[FILL IN HERE]",
             "summary": "near ___ and ___",
         }
+    },
+    "Longsheng": {
+        "month": "Oct",
+        "dates": [28, 29],
+        "lodging": {
+            "name": "hostel",
+            "address": "[FILL IN HERE]",
+            "check-in time": "[FILL IN HERE]",
+            "check-out time": "[FILL IN HERE]",
+            "url": "[FILL IN HERE]",
+            "summary": "near ___ and ___",
+        }
+    },
+    "Yangshuo": {
+        "month": "Oct",
+        "dates": [30, 31],
+        "lodging": {
+            "name": "hostel",
+            "address": "[FILL IN HERE]",
+            "check-in time": "[FILL IN HERE]",
+            "check-out time": "[FILL IN HERE]",
+            "url": "[FILL IN HERE]",
+            "summary": "near ___ and ___",
+        }
     }
 }

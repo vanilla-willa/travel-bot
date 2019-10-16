@@ -1,7 +1,7 @@
 import os
 import sys
 from datetime import datetime
-# from brain import process_message
+from brain import process_message
 from flask import Flask, request
 import requests
 import json
@@ -44,25 +44,24 @@ def webhook():
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
-                    # if messaging_event["message"].get("text"):  # user sent a text message
-                    #     message = messaging_event["message"].get("text")
-                    #     message_type = "text"
-                    #
-                    # elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
-                    #     # message_payload will be the same as the text
-                    #     message = messaging_event["message"]["quick_reply"]["payload"]
-                    #     message_type = "quick_reply"
-                    #
-                    # else:
-                    #     send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
-                    #                                       "text and quick reply"))
+                    if messaging_event["message"].get("text"):  # user sent a text message
+                        message = messaging_event["message"].get("text")
+                        message_type = "text"
+
+                    elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+                        # message_payload will be the same as the text
+                        message = messaging_event["message"]["quick_reply"]["payload"]
+                        message_type = "quick_reply"
+
+                    else:
+                        send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
+                                                          "text and quick reply"))
 
                     mark_message_read(user_id)
                     typing(user_id)
 
-                    # msg_data = process_message(message_type, message)
-                    # send_message(user_id, msg_data)
-                    send_message(user_id, "default uwu!")
+                    msg_data = process_message(message_type, message)
+                    send_message(user_id, msg_data)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass

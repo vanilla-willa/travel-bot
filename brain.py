@@ -19,8 +19,7 @@ class Brain:
             return "quick_reply"
 
         else:
-            self.send_message(self.user_id, dict(text="Sorry. I currently do not support anything beyond "
-                                                 "text and quick reply"))
+            self.send_message(dict(text="Sorry. I currently do not support anything beyond text and quick reply"))
             return None
 
     def read_message_text(self, messaging_event):
@@ -39,7 +38,7 @@ class Brain:
         :return: dict with text and quick_reply
         quick_reply is a list of dicts
         """
-        self.typing(self.user_id)
+        self.typing()
         response = {}
 
         if message in consts.GREETINGS:

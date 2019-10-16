@@ -8,10 +8,10 @@ import json
 
 class Brain:
 
-    def __init__(self, user_id):
-        self.user_id = user_id
+    def __init__(self):
+        pass
 
-    def determine_message_type(self, messaging_event):
+    def determine_message_type(self, user_id, messaging_event):
         if messaging_event["message"].get("text"):  # user sent a text message
             return "text"
 
@@ -19,26 +19,27 @@ class Brain:
             return "quick_reply"
 
         else:
-            self.send_message(dict(text="Sorry. I currently do not support anything beyond text and quick reply"))
+            self.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
+                                                 "text and quick reply"))
             return None
 
-    def read_message_text(self, messaging_event):
-        self.mark_message_read()
-        if self.determine_message_type(messaging_event) == "text":
+    def read_message_text(self, user_id, messaging_event):
+        if self.determine_message_type(user_id, messaging_event) == "text":
             return messaging_event["message"].get("text")
         else:
             return messaging_event["message"]["quick_reply"]["payload"]
 
-    def process_message(self, message_type, message):
+    def process_message(self, user_id, message_type, message):
         """
         User input of either text or quick reply returns additional text and quick reply
         Payload from quick reply lets you know which button was clicked
+        :param user_id: string
         :param message: either text or payload
         :param message_type: either text or quick_reply
         :return: dict with text and quick_reply
         quick_reply is a list of dicts
         """
-        self.typing()
+        self.typing(user_id)
         response = {}
 
         if message in consts.GREETINGS:
@@ -50,12 +51,12 @@ class Brain:
 
         return response
 
-    def send_message(self, message):
+    def send_message(self, user_id, message):
         # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
         # message parameter will contain both text and quick response
         bot_text = message.get("text")
 
-        self.log("sending message to {recipient}: {text}".format(recipient=self.user_id, text=bot_text))
+        self.log("sending message to {recipient}: {text}".format(recipient=user_id, text=bot_text))
 
         params = {
             "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -65,7 +66,7 @@ class Brain:
         }
         data = json.dumps({
             "recipient": {
-                "id": self.user_id
+                "id": user_id
             },
             "message": message
             # {
@@ -87,7 +88,7 @@ class Brain:
             self.log(r.status_code)
             self.log(r.text)
 
-    def mark_message_read(self):
+    def mark_message_read(self, user_id):
         # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
         self.log("Marking message as read")
@@ -100,7 +101,7 @@ class Brain:
         }
         data = json.dumps({
             "recipient": {
-                "id": self.user_id
+                "id": user_id
             },
             "sender_action": "mark_seen"
         })
@@ -109,7 +110,7 @@ class Brain:
             self.log(r.status_code)
             self.log(r.text)
 
-    def typing(self):
+    def typing(self, user_id):
         # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
         self.log("Sending ... chat bubble to user")
@@ -122,7 +123,7 @@ class Brain:
         }
         data = json.dumps({
             "recipient": {
-                "id": self.user_id
+                "id": user_id
             },
             "sender_action": "typing_on"
         })

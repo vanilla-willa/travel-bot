@@ -45,7 +45,7 @@ def webhook():
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
                     recipient_id = messaging_event["recipient"]["id"]  # your page's facebook ID
 
-                    decision = Brain()
+                    decision = Brain(user_id)
 
                     message_type = decision.determine_message_type(user_id, messaging_event)
                     if message_type is None:

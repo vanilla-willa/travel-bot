@@ -47,6 +47,7 @@ class Brain:
         """
         self.typing(user_id)
         response = {}
+        print("This is a quick reply: ", self.is_quick_reply)
 
         message = message_properties[0]
         if len(message_properties) > 1:

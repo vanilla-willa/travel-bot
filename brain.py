@@ -135,29 +135,3 @@ class Brain:
     def log(message):
         print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
         sys.stdout.flush()
-
-# def process_message(message_type, message):
-#     """
-#     User input of either text or quick reply returns additional text and quick reply
-#     Payload from quick reply lets you know which button was clicked
-#     :param message: either text or payload
-#     :param message_type: either text or quick_reply
-#     :return: dict with text and quick_reply
-#     quick_reply is a list of dicts
-#     """
-#
-#     response = {}
-#
-#     if message in consts.GREETINGS:
-#         response.update(dict(text=consts.TEXT_OUTPUTS["start"]))
-#         log("Updated to response dict. Currently looks like: {}".format(response))
-#         quick_reply_list = list(dict(content_type="text", title=opt, payload=opt) for opt in consts.INITIAL)
-#         response.update(dict(quick_replies=quick_reply_list))
-#         log("Updated to response dict. Currently looks like: {}".format(response))
-#
-#     return response
-#
-#
-# def log(message):
-#     print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
-#     sys.stdout.flush()

@@ -1,7 +1,7 @@
 import os
 import sys
 from datetime import datetime
-from brain import process_message
+# from brain import process_message
 from flask import Flask, request
 import requests
 import json
@@ -13,6 +13,7 @@ app = Flask(__name__)
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
+    print("inside GET method")
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403

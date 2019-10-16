@@ -64,8 +64,7 @@ def webhook():
                     send_message(sender_id, msg_data)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
-
-                    log()
+                    pass
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass

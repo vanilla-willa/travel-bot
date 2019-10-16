@@ -47,29 +47,15 @@ def webhook():
 
                     decision = Brain(user_id)
 
-                    message_type = decision.determine_message_type(user_id, messaging_event)
+                    message_type = decision.determine_message_type(messaging_event)
                     if message_type is None:
                         return "ok", 200
 
-                    message = decision.read_message_text(user_id, messaging_event)
-                    # if messaging_event["message"].get("text"):  # user sent a text message
-                    #     message = messaging_event["message"].get("text")
-                    #     message_type = "text"
-                    #
-                    # elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
-                    #     # message_payload will be the same as the text
-                    #     message = messaging_event["message"]["quick_reply"]["payload"]
-                    #     message_type = "quick_reply"
-                    #
-                    # else:
-                    #     send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
-                    #                                       "text and quick reply"))
-
-                    decision.mark_message_read(user_id)
-                    decision.typing(user_id)
+                    message = decision.read_message_text(messaging_event)
+                    decision.mark_message_read()
 
                     msg_data = decision.process_message(message_type, message)
-                    decision.send_message(user_id, msg_data)
+                    decision.send_message(msg_data)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass

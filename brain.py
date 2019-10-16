@@ -42,6 +42,7 @@ class Brain:
         response = {}
 
         if message in consts.GREETINGS:
+            response.update(dict(text=consts.TEXT_OUTPUTS["start"]))
             self.log("Updated to response dict. Currently looks like: {}".format(response))
             quick_reply_list = list(dict(content_type="text", title=opt, payload=opt) for opt in consts.INITIAL)
             response.update(dict(quick_replies=quick_reply_list))

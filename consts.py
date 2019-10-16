@@ -3,7 +3,7 @@ GREETINGS = ["hello", "hi"]
 
 INITIAL = ["Guangzhou"]
 
-TEXT_OUTPUTS = {
+BOT_MSGS = {
     "start": "Hi, I'm here to retrieve information about your lodging plans.",
     "location": "Select your location.",
     "info": "What info would you like?",
@@ -14,51 +14,43 @@ TEXT_OUTPUTS = {
 
 DATA = {
     "Guangzhou": {
+        "name": "hostel",
         "month": "Oct",
         "dates": [24],
-        "lodging": {
-            "name": "hostel",
-            "address": "[FILL IN HERE]",
-            "check-in time": "[FILL IN HERE]",
-            "check-out time": "[FILL IN HERE]",
-            "url": "[FILL IN HERE]",
-            "summary": "near ___ and ___",
-        }
+        "address": "[FILL IN HERE]",
+        "check-in time": "[FILL IN HERE]",
+        "check-out time": "[FILL IN HERE]",
+        "url": "[FILL IN HERE]",
+        "summary": "near ___ and ___",
     },
     "Hong Kong": {
+        "name": "hostel",
         "month": "Oct",
         "dates": [25, 26],
-        "lodging": {
-            "name": "hostel",
-            "address": "[FILL IN HERE]",
-            "check-in time": "[FILL IN HERE]",
-            "check-out time": "[FILL IN HERE]",
-            "url": "[FILL IN HERE]",
-            "summary": "near ___ and ___",
-        }
+        "address": "[FILL IN HERE]",
+        "check-in time": "[FILL IN HERE]",
+        "check-out time": "[FILL IN HERE]",
+        "url": "[FILL IN HERE]",
+        "summary": "near ___ and ___",
     },
     "Longsheng": {
+        "name": "hostel",
         "month": "Oct",
         "dates": [28, 29],
-        "lodging": {
-            "name": "hostel",
-            "address": "[FILL IN HERE]",
-            "check-in time": "[FILL IN HERE]",
-            "check-out time": "[FILL IN HERE]",
-            "url": "[FILL IN HERE]",
-            "summary": "near ___ and ___",
-        }
+        "address": "[FILL IN HERE]",
+        "check-in time": "[FILL IN HERE]",
+        "check-out time": "[FILL IN HERE]",
+        "url": "[FILL IN HERE]",
+        "summary": "near ___ and ___",
     },
     "Yangshuo": {
+        "name": "hostel",
         "month": "Oct",
         "dates": [30, 31],
-        "lodging": {
-            "name": "hostel",
-            "address": "[FILL IN HERE]",
-            "check-in time": "[FILL IN HERE]",
-            "check-out time": "[FILL IN HERE]",
-            "url": "[FILL IN HERE]",
-            "summary": "near ___ and ___",
-        }
+        "address": "[FILL IN HERE]",
+        "check-in time": "[FILL IN HERE]",
+        "check-out time": "[FILL IN HERE]",
+        "url": "[FILL IN HERE]",
+        "summary": "near ___ and ___",
     }
 }

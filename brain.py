@@ -1,11 +1,11 @@
 import sys
 import consts
 from datetime import datetime
-from graph import Graph
+# from graph import Graph
 
 
-def create_graph():
-    test = Graph()
+# def create_graph():
+#     test = Graph()
 
 def process_message(message_type, message):
     """
@@ -36,5 +36,5 @@ def process_message(message_type, message):
 
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), unicode(message)))
+    print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))
     sys.stdout.flush()

@@ -4,11 +4,6 @@ import consts
 from datetime import datetime
 import requests
 import json
-# from graph import Graph
-
-
-# def create_graph():
-#     test = Graph()
 
 class Brain:
 

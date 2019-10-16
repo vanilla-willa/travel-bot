@@ -24,7 +24,8 @@ class Brain:
             return None
 
     def read_message_text(self, messaging_event):
-        if self.determine_message_type(self.user_id, messaging_event) == "text":
+        self.mark_message_read()
+        if self.determine_message_type(messaging_event) == "text":
             return messaging_event["message"].get("text")
         else:
             return messaging_event["message"]["quick_reply"]["payload"]

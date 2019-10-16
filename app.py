@@ -43,15 +43,15 @@ def webhook():
                     # If the signatures match, the payload is genuine.
 
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
-                    decision = Brain(user_id)
+                    decision = Brain()
 
-                    message_type = decision.determine_message_type(messaging_event)
+                    message_type = decision.determine_message_type(user_id, messaging_event)
                     if message_type is None:
                         return "ok", 200
 
-                    message = decision.read_message_text(messaging_event)
-                    msg_data = decision.process_message(message_type, message)
-                    decision.send_message(msg_data)
+                    message = decision.read_message_text(user_id, messaging_event)
+                    msg_data = decision.process_message(user_id, message_type, message)
+                    decision.send_message(user_id, msg_data)
 
                     # if messaging_event["message"].get("text"):
                     #     send_message(user_id, dict(text="hello"))

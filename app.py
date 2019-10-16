@@ -13,7 +13,6 @@ app = Flask(__name__)
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
-    print("inside GET method")
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
@@ -63,7 +62,7 @@ def webhook():
 
                     # msg_data = process_message(message_type, message)
                     # send_message(user_id, msg_data)
-                    send_message(user_id, "hello!")
+                    send_message(user_id, "default uwu!")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -80,7 +79,7 @@ def send_message(user_id, message):
     # bot_text = message.get("text")
 
     # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=bot_text))
-    log("sending message to {recipient}".format(recipient=user_id))
+    log("sending message to {recipient}: {text}".format(recipient=user_id, text=message))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]

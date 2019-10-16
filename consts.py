@@ -3,15 +3,6 @@ GREETINGS = ["hello", "hi"]
 
 INITIAL = ["Guangzhou"]
 
-CITIES_AND_DATES = {
-    "Guangzhou": ["Oct 24"],
-    "Hong Kong": ["Oct 25", "Oct 26", "Oct 27"],
-    "Longsheng":  ["Oct 28", "Oct 29"],
-    "Yangshuo": ["Oct 30", "Oct 31"],
-    "Fuzhou": ["Nov 1", "Nov 2", "Nov 3"],
-    "Shenzhen": ["Nov 4", "Nov 5"]
-}
-
 TEXT_OUTPUTS = {
     "start": "Hi, I'm here to retrieve information about your lodging plans.",
     "location": "Select your location.",
@@ -21,7 +12,7 @@ TEXT_OUTPUTS = {
     "stop": "Thank you for chatting with me! Hope to talk to you soon! :) "
 }
 
-nodes = {
+DATA = {
     "Guangzhou": {
         "month": "Oct",
         "dates": [24],
@@ -33,6 +24,17 @@ nodes = {
             "url": "[FILL IN HERE]",
             "summary": "near ___ and ___",
         }
+    },
+    "Hong Kong": {
+        "month": "Oct",
+        "dates": [25, 26],
+        "lodging": {
+            "name": "hostel",
+            "address": "[FILL IN HERE]",
+            "check-in time": "[FILL IN HERE]",
+            "check-out time": "[FILL IN HERE]",
+            "url": "[FILL IN HERE]",
+            "summary": "near ___ and ___",
+        }
     }
-
 }

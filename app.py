@@ -1,7 +1,6 @@
 import os
 import sys
 from datetime import datetime
-# from brain import process_message
 from brain import Brain
 from flask import Flask, request
 import requests
@@ -53,6 +52,7 @@ def webhook():
                     msg_data = decision.process_message(user_id, message_type, message)
                     decision.send_message(user_id, msg_data)
 
+                    # DEBUGGING
                     # if messaging_event["message"].get("text"):
                     #     send_message(user_id, dict(text="hello"))
 
@@ -64,7 +64,7 @@ def webhook():
 
     return "ok", 200
 
-
+# DEBUGGING
 # def send_message(user_id, message):
 #     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 #     # message parameter will contain both text and quick response

@@ -24,11 +24,11 @@ class Brain:
 
         else:
             self.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
-                                              "text and quick reply"))
+                                                 "text and quick reply"))
             return None
 
     def read_message_text(self, user_id, messaging_event):
-        if self.determine_message_type(messaging_event, user_id) == "text":
+        if self.determine_message_type(user_id, messaging_event) == "text":
             return messaging_event["message"].get("text")
         else:
             return messaging_event["message"]["quick_reply"]["payload"]

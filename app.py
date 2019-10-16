@@ -34,7 +34,6 @@ def webhook():
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                log("printing out messaging event: {}".format(messaging_event))
                 if messaging_event.get("message"):  # someone sent us a message
 
                     # TODO: validate payload

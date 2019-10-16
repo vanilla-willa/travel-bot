@@ -25,7 +25,7 @@ class Brain:
                                                  "text and quick reply"))
             return None
 
-    def read_message_text(self, message_type, messaging_event):
+    def read_message_text(self, messaging_event):
         if not self.is_quick_reply:
             message = messaging_event["message"].get("text")
             self.log(message)

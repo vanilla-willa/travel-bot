@@ -2,7 +2,7 @@ import os
 import sys
 from datetime import datetime
 # from brain import process_message
-from brain import Brain
+# from brain import Brain
 from flask import Flask, request
 import requests
 import json
@@ -43,15 +43,18 @@ def webhook():
                     # If the signatures match, the payload is genuine.
 
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
-                    decision = Brain()
+                    # decision = Brain()
 
-                    message_type = decision.determine_message_type(user_id, messaging_event)
-                    if message_type is None:
-                        return "ok", 200
+                    # message_type = decision.determine_message_type(user_id, messaging_event)
+                    # if message_type is None:
+                    #    return "ok", 200
 
-                    message = decision.read_message_text(user_id, messaging_event)
-                    msg_data = decision.process_message(user_id, message_type, message)
-                    decision.send_message(msg_data)
+                    # message = decision.read_message_text(user_id, messaging_event)
+                    # msg_data = decision.process_message(user_id, message_type, message)
+                    # decision.send_message(msg_data)
+
+                    if messaging_event["message"].get("text"):
+                        send_message(user_id, dict(text="hello"))
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -61,6 +64,30 @@ def webhook():
 
     return "ok", 200
 
+
+def send_message(user_id, message):
+    # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+    # message parameter will contain both text and quick response
+    bot_text = message.get("text")
+
+    log("sending message to {recipient}: {text}".format(recipient=user_id, text=bot_text))
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": user_id
+        },
+        "message": message
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 def log(message):
     print("=== {} DEBUG MSG:: {} ===".format(datetime.now(), message))

@@ -3,9 +3,8 @@ import sys
 from datetime import datetime
 from brain import Brain
 from flask import Flask, request
-from bson.json_util import dumps
-import requests
 import json
+import requests
 
 app = Flask(__name__)
 
@@ -35,7 +34,7 @@ def webhook():
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                messaging_event = dumps(messaging_event)
+                messaging_event = json.dumps(messaging_event)
                 print("converted messaging event: ", messaging_event)
                 if messaging_event.get("message"):  # someone sent us a message
 

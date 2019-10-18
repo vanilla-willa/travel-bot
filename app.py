@@ -50,7 +50,9 @@ def webhook():
                     #                                              "text and quick reply"))
                     #     return "ok", 200
 
+                    print("Messaging event is: ", messaging_event["message"])
                     print("!!!!!! DEBUG: ", messaging_event["message"].get("quick_reply"))
+                    print("!!!!!! DEBUG: ", messaging_event["message"].get("text"))
                     message_properties = decision.read_message_text(messaging_event)
                     if message_properties is None:
                         decision.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "

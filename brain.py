@@ -53,15 +53,12 @@ class Brain:
             response.update(dict(quick_replies=quick_reply_list))
 
         elif self.is_quick_reply:
-            self.log("this is a freaking quick reply")
-            self.log("WHY DOES THIS NOT MATCH: type(u'city'): {}, type(self.payload): {}, self.payload: {}".format(
-                type(u'city'), type(self.payload), self.payload))
             if self.payload == u'city':
-                self.log("i just clicked on a freaking city")
                 response.update(dict(text=consts.BOT_MSGS["info"]))
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
                 quick_reply_list = list(dict(content_type="text", title=info, payload = "info")
                                         for city in consts.DATA.keys() for info in consts.DATA[city].keys())
+                self.log("Updated to response dict. Currently looks like: {}".format(response))
                 response.update(dict(quick_replies=quick_reply_list))
 
         return response

@@ -29,9 +29,8 @@ class Brain:
             return None
 
         if self.is_quick_reply:
-            message = messaging_event["message"]["quick_reply"]["text"]
-            payload = messaging_event["message"]["quick_reply"]["payload"]
-            self.log("message: {}, payload: {} ".format(message, payload))
+            message = messaging_event["message"].get("text")
+            payload = messaging_event["message"]["quick_reply"].get("payload")
             return [message, payload]
         else:
             message = messaging_event["message"].get("text")

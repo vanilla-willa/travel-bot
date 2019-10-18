@@ -34,6 +34,7 @@ def webhook():
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
+                messaging_event = messaging_event.encode('UTF-8')
                 if messaging_event.get("message"):  # someone sent us a message
 
                     # TODO: validate payload
@@ -50,7 +51,7 @@ def webhook():
                                                                  "text and quick reply"))
                         return "ok", 200
                     print("What is message_properties?: ", message_properties)
-                    msg_data = decision.process_message(user_id, message_properties)
+                    msg_data = decision.process_message(user_id)
                     decision.send_message(user_id, msg_data)
 
                     # DEBUGGING

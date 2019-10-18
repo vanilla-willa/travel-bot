@@ -36,13 +36,12 @@ class Brain:
             return [self.message, self.payload]
         return [self.message]
 
-    def process_message(self, user_id, message_properties):
+    def process_message(self, user_id):
         """
         User input of either text or quick reply returns additional text and quick reply
         Payload from quick reply lets you know which button was clicked
         :param user_id: string
-        :param message_properties: list of length 1 or 2, depending on text or quick reply, respectively
-        :return: dict with text and quick_reply
+        :return: response - dict with text and quick_reply
         quick_reply is a list of dicts
         """
         self.typing(user_id)

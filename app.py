@@ -31,10 +31,9 @@ def webhook():
     log(data)
 
     if data["object"] == "page":
-        print("HI!!")
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                messaging_event = json.dumps(messaging_event)
+                messaging_event = dict((str(key), str(value)) for key, value in messaging_event.items())
                 print("converted messaging event: ", messaging_event)
                 if messaging_event.get("message"):  # someone sent us a message
 

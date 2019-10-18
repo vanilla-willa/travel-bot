@@ -44,20 +44,12 @@ def webhook():
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
                     decision = Brain()
 
-                    # message_type = decision.determine_message_type(user_id, messaging_event)
-                    # if message_type is None:
-                    #     decision.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
-                    #                                              "text and quick reply"))
-                    #     return "ok", 200
-
-                    print("Messaging event is: ", messaging_event["message"])
-                    print("!!!!!! DEBUG: ", messaging_event["message"].get("quick_reply"))
-                    print("!!!!!! DEBUG: ", messaging_event["message"].get("text"))
                     message_properties = decision.read_message_text(messaging_event)
                     if message_properties is None:
                         decision.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
                                                                  "text and quick reply"))
                         return "ok", 200
+                    print("What is message_properties?: ", message_properties)
                     msg_data = decision.process_message(user_id, message_properties)
                     decision.send_message(user_id, msg_data)
 

@@ -10,6 +10,8 @@ class Brain:
 
     def __init__(self):
         self.is_quick_reply = None
+        self.message = None
+        self.payload = None
         pass
 
     def determine_message_type(self, messaging_event):
@@ -19,7 +21,7 @@ class Brain:
             self.is_quick_reply = True
 
         elif messaging_event["message"].get("text"):  # user sent a text
-            print("User sent quick reply. Setting is_quick_reply to False")
+            print("User sent text. Setting is_quick_reply to False")
             self.is_quick_reply = False
 
     def read_message_text(self, messaging_event):
@@ -28,11 +30,11 @@ class Brain:
         if self.is_quick_reply is None:
             return None
 
-        message = messaging_event["message"].get("text")
+        self.message = messaging_event["message"].get("text")
         if self.is_quick_reply:
-            payload = messaging_event["message"]["quick_reply"]["payload"]
-            return [message, payload]
-        return [message]
+            self.payload = messaging_event["message"]["quick_reply"]["payload"]
+            return [self.message, self.payload]
+        return [self.message]
 
     def process_message(self, user_id, message_properties):
         """
@@ -45,22 +47,15 @@ class Brain:
         """
         self.typing(user_id)
         response = {}
-        print("This is a quick reply: ", self.is_quick_reply)
 
-        message = message_properties[0]
-        if self.is_quick_reply:
-            payload = message_properties[1]
-
-        if message in consts.GREETINGS:
+        if self.message in consts.GREETINGS:
             response.update(dict(text=consts.BOT_MSGS["start"]))
-            # self.log("Updated to response dict. Currently looks like: {}".format(response))
             quick_reply_list = list(dict(content_type="text", title=city, payload="city") for city in consts.DATA.keys())
             response.update(dict(quick_replies=quick_reply_list))
-            # self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         elif self.is_quick_reply:
             self.log("this is a freaking quick reply")
-            if payload is "city":
+            if self.payload is "city":
                 self.log("i just clicked on a freaking city")
                 response.update(dict(text=consts.BOT_MSGS["info"]))
                 self.log("Updated to response dict. Currently looks like: {}".format(response))

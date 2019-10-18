@@ -28,7 +28,7 @@ def webhook():
     # TODO: implement greeting message and get started button
 
     data = request.get_json()
-    log(data)  # you may not want to log every incoming message in production, but it's good for testing
+    log(data)
 
     if data["object"] == "page":
 
@@ -44,11 +44,17 @@ def webhook():
                     user_id = messaging_event["sender"]["id"]        # user's facebook ID
                     decision = Brain()
 
-                    message_type = decision.determine_message_type(user_id, messaging_event)
-                    if message_type is None:
-                        return "ok", 200
+                    # message_type = decision.determine_message_type(user_id, messaging_event)
+                    # if message_type is None:
+                    #     decision.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
+                    #                                              "text and quick reply"))
+                    #     return "ok", 200
 
                     message_properties = decision.read_message_text(messaging_event)
+                    if message_properties is None:
+                        decision.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
+                                                                 "text and quick reply"))
+                        return "ok", 200
                     msg_data = decision.process_message(user_id, message_properties)
                     decision.send_message(user_id, msg_data)
 

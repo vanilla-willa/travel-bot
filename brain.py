@@ -9,32 +9,34 @@ import json
 class Brain:
 
     def __init__(self):
-        self.is_quick_reply = False
+        self.is_quick_reply = None
         pass
 
-    def determine_message_type(self, user_id, messaging_event):
-        if messaging_event["message"].get("text"):  # user sent a text message
-            return "text"
-
-        elif messaging_event["message"].get("quick_reply"):  # user sent a quick reply
+    def determine_message_type(self, messaging_event):
+        if messaging_event["message"].get("quick_reply"):  # user sent a quick reply
             self.is_quick_reply = True
-            return "quick_reply"
+            # return "quick_reply"
+
+        elif messaging_event["message"].get("text"):  # user sent a text message
+            self.is_quick_reply = False
+            # return "text"
 
         else:
-            self.send_message(user_id, dict(text="Sorry. I currently do not support anything beyond "
-                                                 "text and quick reply"))
             return None
 
     def read_message_text(self, messaging_event):
-        if not self.is_quick_reply:
-            message = messaging_event["message"].get("text")
-            self.log(message)
-            return [message]
-        else:
+        if self.is_quick_reply is None:
+            return None
+
+        if self.is_quick_reply:
             message = messaging_event["message"]["quick_reply"]["text"]
             payload = messaging_event["message"]["quick_reply"]["payload"]
             self.log("message: {}, payload: {} ".format(message, payload))
             return [message, payload]
+        else:
+            message = messaging_event["message"].get("text")
+            self.log(message)
+            return [message]
 
     def process_message(self, user_id, message_properties):
         """
@@ -50,7 +52,7 @@ class Brain:
         print("This is a quick reply: ", self.is_quick_reply)
 
         message = message_properties[0]
-        if len(message_properties) > 1:
+        if self.is_quick_reply:
             payload = message_properties[1]
 
         if message in consts.GREETINGS:

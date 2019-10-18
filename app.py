@@ -33,8 +33,8 @@ def webhook():
     if data["object"] == "page":
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                # messaging_event = convert_recursive(messaging_event)
-                # print("converted messaging event: ", messaging_event)
+                messaging_event = convert_recursive(messaging_event)
+                print("converted messaging event: ", messaging_event)
                 if messaging_event.get("message"):  # someone sent us a message
 
                     # TODO: validate payload
@@ -66,13 +66,13 @@ def webhook():
 
     return "ok", 200
 
-#
-# def convert_recursive(unicode_message):
-#     if isinstance(unicode_message, dict):
-#         return {convert_recursive(key): convert_recursive(value)
-#                 for key, value in unicode_message.iteritems().encode('utf-8')}
-#     else:
-#         return unicode_message.encode('utf-8')
+
+def convert_recursive(unicode_message):
+    if isinstance(unicode_message, dict):
+        return {convert_recursive(key): convert_recursive(value)
+                for key, value in unicode_message.iteritems().encode('utf-8')}
+    else:
+        return unicode_message.encode('utf-8')
 
 
 def log(message):

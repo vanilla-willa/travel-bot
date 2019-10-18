@@ -33,7 +33,7 @@ def webhook():
     if data["object"] == "page":
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                messaging_event = convert_recursive(messaging_event)
+                # messaging_event = convert_recursive(messaging_event)
                 print("converted messaging event: ", messaging_event)
                 if messaging_event.get("message"):  # someone sent us a message
 

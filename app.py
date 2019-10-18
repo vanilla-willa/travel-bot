@@ -96,10 +96,8 @@ def convert_recursive(unicode_message):
     if isinstance(unicode_message, dict):
         return {convert_recursive(key): convert_recursive(value)
                 for key, value in unicode_message.iteritems().encode('utf-8')}
-    if isinstance(input, list):
-        return [convert_recursive(element) for element in input]
     else:
-        return unicode_message
+        return unicode_message.encode('utf-8')
 
 
 def log(message):

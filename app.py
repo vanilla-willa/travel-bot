@@ -33,8 +33,8 @@ def webhook():
     if data["object"] == "page":
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-                messaging_event = convert_recursive(messaging_event)
-                print("converted messaging event: ", messaging_event)
+                # messaging_event = convert_recursive(messaging_event)
+                # print("converted messaging event: ", messaging_event)
                 if messaging_event.get("message"):  # someone sent us a message
 
                     # TODO: validate payload
@@ -65,31 +65,6 @@ def webhook():
                     pass
 
     return "ok", 200
-
-# DEBUGGING
-# def send_message(user_id, message):
-#     # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
-#     # message parameter will contain both text and quick response
-#     bot_text = message.get("text")
-#
-#     log("sending message to {recipient}: {text}".format(recipient=user_id, text=bot_text))
-#
-#     params = {
-#         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-#     }
-#     headers = {
-#         "Content-Type": "application/json"
-#     }
-#     data = json.dumps({
-#         "recipient": {
-#             "id": user_id
-#         },
-#         "message": message
-#     })
-#     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-#     if r.status_code != 200:
-#         log(r.status_code)
-#         log(r.text)
 
 
 def convert_recursive(unicode_message):

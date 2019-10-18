@@ -28,14 +28,11 @@ class Brain:
         if self.is_quick_reply is None:
             return None
 
+        message = messaging_event["message"].get("text")
         if self.is_quick_reply:
-            message = messaging_event["message"].get("text")
-            payload = messaging_event["message"]["quick_reply"].get("payload")
+            payload = messaging_event["message"]["quick_reply"]["payload"]
             return [message, payload]
-        else:
-            message = messaging_event["message"].get("text")
-            self.log(message)
-            return [message]
+        return [message]
 
     def process_message(self, user_id, message_properties):
         """
@@ -91,19 +88,6 @@ class Brain:
                 "id": user_id
             },
             "message": message
-            # {
-            #     "text": message,
-            #     "quick_replies": [{
-            #         "content_type": "text",
-            #         "title": "test1",
-            #         "payload": "test1"
-            #     }, {
-            #         "content_type": "text",
-            #         "title": "test2",
-            #         "payload": "test2"
-            #       }
-            #     ]
-            # }
         })
         r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
         if r.status_code != 200:

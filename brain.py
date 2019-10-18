@@ -13,20 +13,18 @@ class Brain:
         pass
 
     def determine_message_type(self, messaging_event):
-        if messaging_event["message"].get("quick_reply"):  # user sent a text message
+        # Set is_quick_reply to either True or False. If not compatible, defaulted to None
+        if messaging_event["message"].get("quick_reply"):  # user sent a quick reply
             print("User sent quick reply. Setting is_quick_reply to True")
             self.is_quick_reply = True
-            # return "quick_reply"
 
-        elif messaging_event["message"].get("text"):  # user sent a quick reply
+        elif messaging_event["message"].get("text"):  # user sent a text
             print("User sent quick reply. Setting is_quick_reply to False")
             self.is_quick_reply = False
-            # return "text"
-
-        else:
-            return None
 
     def read_message_text(self, messaging_event):
+        self.determine_message_type(messaging_event)
+
         if self.is_quick_reply is None:
             return None
 

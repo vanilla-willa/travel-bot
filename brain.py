@@ -54,6 +54,8 @@ class Brain:
 
         elif self.is_quick_reply:
             self.log("this is a freaking quick reply")
+            self.log("WHY DOES THIS NOT MATCH: type(u'city'): {}, type(self.payload): {}, self.payload: {}".format(
+                type(u'city'), type(self.payload), self.payload))
             if self.payload == u'city':
                 self.log("i just clicked on a freaking city")
                 response.update(dict(text=consts.BOT_MSGS["info"]))

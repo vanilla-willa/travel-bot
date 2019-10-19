@@ -58,8 +58,8 @@ class Graph:
         self.num_vertices += 1
 
     def create_graph(self):
-        bot = list(BotNode(name=key, category=key, prev_node=None, greeting=consts.BOT_MSGS[key])
-                   for key in consts.BOT_MSGS.keys())
+        bot = [BotNode(name=key, category=key, prev_node=None, greeting=consts.BOT_MSGS[key])
+                   for key in consts.BOT_MSGS.keys()]
         print(bot)
         # self.add_node(bot)
 

@@ -21,6 +21,7 @@ DATA = {
         "Check-out Time": "[FILL IN HERE]",
         "Url": "[FILL IN HERE]",
         "Summary": "near ___ and ___",
+        "Visited": False
     },
     "Hong Kong": {
         "Name": "hostel",
@@ -30,6 +31,7 @@ DATA = {
         "Check-out Time": "[FILL IN HERE]",
         "Url": "[FILL IN HERE]",
         "Summary": "near ___ and ___",
+        "Visited": False
     },
     "Longsheng": {
         "Name": "hostel",
@@ -39,6 +41,7 @@ DATA = {
         "Check-out Time": "[FILL IN HERE]",
         "Url": "[FILL IN HERE]",
         "Summary": "near ___ and ___",
+        "Visited": False
     },
     "Yangshuo": {
         "Name": "hostel",
@@ -48,6 +51,7 @@ DATA = {
         "Check-out time": "[FILL IN HERE]",
         "Url": "[FILL IN HERE]",
         "Summary": "near ___ and ___",
+        "Visited": False
     }
 }
 

@@ -13,7 +13,6 @@ class Brain:
         self.is_quick_reply = None
         self.message = None
         self.payload = None
-        self.city = None
         pass
 
     def determine_message_type(self, messaging_event):
@@ -52,32 +51,39 @@ class Brain:
         self.typing(user_id)
         response = {}
 
-        graph = Graph()
-        graph.create_graph()
+        if self.message in consts.GREETINGS:
+            response.update(dict(text=consts.BOT_MSGS["start"]))
+            quick_reply_list = list(dict(content_type="text", title=city, payload=city) for city in consts.DATA.keys())
+            response.update(dict(quick_replies=quick_reply_list))
 
-        # if self.message in consts.GREETINGS:
-        #     response.update(dict(text=consts.BOT_MSGS["start"]))
-        #     quick_reply_list = list(dict(content_type="text", title=city, payload=city) for city in consts.DATA.keys())
-        #     response.update(dict(quick_replies=quick_reply_list))
-        #
-        # elif self.is_quick_reply:
-        #     # if self.payload in consts.DATA.keys():
-        #     if self.payload in consts.DATA.keys():
-        #         print("Clicked on a city quick reply button ", self.message)
-        #         response.update(dict(text=consts.BOT_MSGS["info"]))
-        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
-        #         quick_reply_list = list(dict(content_type="text", title=info, payload="info")
-        #                                 for info in consts.DATA[self.message].keys())
-        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
-        #         response.update(dict(quick_replies=quick_reply_list))
-        #
-        #     elif self.payload == u'info':
-        #         print("Clicked on an info quick reply button ", self.message)
-        #         self.log("self.city is {}, self.message is {}".format(self.city, self.message))
-        #         response.update(dict(text=consts.DATA[self.city].get(self.message)))
-        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
+        elif self.is_quick_reply:
+            # if self.payload in consts.DATA.keys():
+            if self.payload in consts.DATA.keys():
+                print("Clicked on a city quick reply button ", self.message)
+                consts.DATA[self.message]["Visited"] = True
+                response.update(dict(text=consts.BOT_MSGS["info"]))
+                self.log("Updated to response dict. Currently looks like: {}".format(response))
+                quick_reply_list = list(dict(content_type="text", title=info, payload="info")
+                                        for info in consts.DATA[self.message].keys())
+                self.log("Updated to response dict. Currently looks like: {}".format(response))
+                response.update(dict(quick_replies=quick_reply_list))
+
+            elif self.payload == u'info':
+                print("Clicked on an info quick reply button ", self.message)
+                # city = [city_name for city_name in consts.DATA.keys() if consts.DATA[city_name].get("Visited") is True]
+                print("This information is for city: ",
+                      [city for city in consts.DATA.keys() if consts.DATA[city].get("Visited") is True])
+                # response.update(dict(text=consts.DATA[city].get(self.message)))
+                # self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response
+
+    def get_city_key(self):
+        # after clicking on city's quick reply button, update Visited to True
+        # search through consts.DATA for Visited: True
+        for city in consts.DATA.keys():
+            if consts.DATA[city].get("Visited") is True:
+                return city
 
     def send_message(self, user_id, message):
         # Facebook's Send API reference: https://developers.facebook.com/docs/messenger-platform/reference/send-api/

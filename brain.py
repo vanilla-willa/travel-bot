@@ -67,9 +67,9 @@ class Brain:
                                         for info in consts.DATA[self.message].keys())
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
                 response.update(dict(quick_replies=quick_reply_list))
-
-            elif self.payload == u'info':
-                self.log("self.city is {}, self.message is {}".format(self.city, self.message))
+            #
+            # elif self.payload == u'info':
+            #     self.log("self.city is {}, self.message is {}".format(self.city, self.message))
                 # response.update(dict(text=consts.DATA[self.city].get(self.message)))
                 # self.log("Updated to response dict. Currently looks like: {}".format(response))
 

@@ -31,10 +31,12 @@ class Brain:
         if self.is_quick_reply is None:
             return None
 
-        print("Setting self.message as ", self.message)
         self.message = messaging_event["message"].get("text")
+        print("Setting self.message as ", self.message)
+
         if self.is_quick_reply:
             self.payload = messaging_event["message"]["quick_reply"]["payload"]
+            print("Setting self.message as ", self.payload)
             return [self.message, self.payload]
         return [self.message]
 

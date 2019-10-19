@@ -71,7 +71,7 @@ class Graph:
         self.tail = new_node
 
     def get_node_from_list(self, node_list, name):
-
+        print(node_list)
 
     def get_current_position(self):
         current_node = self.head

@@ -70,8 +70,8 @@ class Brain:
 
             elif self.payload == u'info':
                 self.log("self.city is {}, self.message is {}".format(self.city, self.message))
-                response.update(dict(text=consts.DATA[self.city].get(self.message)))
-                self.log("Updated to response dict. Currently looks like: {}".format(response))
+                # response.update(dict(text=consts.DATA[self.city].get(self.message)))
+                # self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response
 

@@ -70,11 +70,10 @@ class Brain:
 
             elif self.payload == u'info':
                 print("Clicked on an info quick reply button ", self.message)
-                # city = [city_name for city_name in consts.DATA.keys() if consts.DATA[city_name].get("Visited") is True]
-                print("This information is for city: ",
-                      [city for city in consts.DATA.keys() if consts.DATA[city].get("Visited") is True])
-                # response.update(dict(text=consts.DATA[city].get(self.message)))
-                # self.log("Updated to response dict. Currently looks like: {}".format(response))
+                city = [name for name in consts.DATA.keys() if consts.DATA[name].get("Visited") is True][0]
+                print("This information is for city: ", city)
+                response.update(dict(text=consts.DATA[city].get(self.message)))
+                self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response
 

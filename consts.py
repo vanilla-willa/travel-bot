@@ -15,8 +15,7 @@ BOT_MSGS = {
 DATA = {
     "Guangzhou": {
         "Name": "hostel",
-        "Month": "Oct",
-        "Dates": [24],
+        "Dates": ["Oct 24"],
         "Address": "[FILL IN HERE]",
         "Check-in Time": "[FILL IN HERE]",
         "Check-out Time": "[FILL IN HERE]",
@@ -25,8 +24,7 @@ DATA = {
     },
     "Hong Kong": {
         "Name": "hostel",
-        "Month": "Oct",
-        "Dates": [25, 26],
+        "Dates": ["Oct 25", "Oct 26"],
         "Address": "[FILL IN HERE]",
         "Check-in Time": "[FILL IN HERE]",
         "Check-out Time": "[FILL IN HERE]",
@@ -35,8 +33,7 @@ DATA = {
     },
     "Longsheng": {
         "Name": "hostel",
-        "Month": "Oct",
-        "Dates": [28, 29],
+        "Dates": ["Oct 28", "Oct 29"],
         "Address": "[FILL IN HERE]",
         "Check-in Time": "[FILL IN HERE]",
         "Check-out Time": "[FILL IN HERE]",
@@ -45,8 +42,7 @@ DATA = {
     },
     "Yangshuo": {
         "Name": "hostel",
-        "Month": "Oct",
-        "Dates": [30, 31],
+        "Dates": ["Oct 30", "Oct 31"],
         "Address": "[FILL IN HERE]",
         "Check-in time": "[FILL IN HERE]",
         "Check-out time": "[FILL IN HERE]",
@@ -54,3 +50,4 @@ DATA = {
         "Summary": "near ___ and ___",
     }
 }
+

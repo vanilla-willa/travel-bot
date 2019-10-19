@@ -12,7 +12,6 @@ class Brain:
         self.is_quick_reply = None
         self.message = None
         self.payload = None
-        self.city = None
         pass
 
     def determine_message_type(self, messaging_event):
@@ -31,6 +30,7 @@ class Brain:
         if self.is_quick_reply is None:
             return None
 
+        print("Setting self.message as ", self.message)
         self.message = messaging_event["message"].get("text")
         if self.is_quick_reply:
             self.payload = messaging_event["message"]["quick_reply"]["payload"]
@@ -54,8 +54,9 @@ class Brain:
             response.update(dict(quick_replies=quick_reply_list))
 
         elif self.is_quick_reply:
+            # if self.payload in consts.DATA.keys():
             if self.payload == u'city':
-                self.city = self.message
+                print("Clicked on a city quick reply button ", self.message)
                 response.update(dict(text=consts.BOT_MSGS["info"]))
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
                 quick_reply_list = list(dict(content_type="text", title=info, payload="info")
@@ -65,7 +66,7 @@ class Brain:
 
             elif self.payload == u'info':
                 self.log("self.city is {}, self.message is {}".format(self.city, self.message))
-                response.update(dict(text=consts.DATA[self.city][self.message]))
+                response.update(dict(text=consts.DATA[self.city].get(self.message)))
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response

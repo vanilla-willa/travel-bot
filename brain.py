@@ -12,6 +12,7 @@ class Brain:
         self.is_quick_reply = None
         self.message = None
         self.payload = None
+        self.city = None
         pass
 
     def determine_message_type(self, messaging_event):
@@ -54,12 +55,17 @@ class Brain:
 
         elif self.is_quick_reply:
             if self.payload == u'city':
+                self.city = self.message
                 response.update(dict(text=consts.BOT_MSGS["info"]))
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
                 quick_reply_list = list(dict(content_type="text", title=info, payload="info")
                                         for info in consts.DATA[self.message].keys())
                 self.log("Updated to response dict. Currently looks like: {}".format(response))
                 response.update(dict(quick_replies=quick_reply_list))
+
+            elif self.payload == u'info':
+                response.update(dict(text=consts.DATA[self.city][self.message]))
+                self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response
 

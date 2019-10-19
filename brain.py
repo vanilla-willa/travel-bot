@@ -4,6 +4,7 @@ import consts
 from datetime import datetime
 import requests
 import json
+from graph import Graph
 
 
 class Brain:
@@ -51,27 +52,30 @@ class Brain:
         self.typing(user_id)
         response = {}
 
-        if self.message in consts.GREETINGS:
-            response.update(dict(text=consts.BOT_MSGS["start"]))
-            quick_reply_list = list(dict(content_type="text", title=city, payload="city") for city in consts.DATA.keys())
-            response.update(dict(quick_replies=quick_reply_list))
+        graph = Graph()
+        graph.create_graph()
 
-        elif self.is_quick_reply:
-            # if self.payload in consts.DATA.keys():
-            if self.payload == u'city':
-                print("Clicked on a city quick reply button ", self.message)
-                self.city = self.message
-                response.update(dict(text=consts.BOT_MSGS["info"]))
-                self.log("Updated to response dict. Currently looks like: {}".format(response))
-                quick_reply_list = list(dict(content_type="text", title=info, payload="info")
-                                        for info in consts.DATA[self.message].keys())
-                self.log("Updated to response dict. Currently looks like: {}".format(response))
-                response.update(dict(quick_replies=quick_reply_list))
-
-            elif self.payload == u'info':
-                self.log("self.city is {}, self.message is {}".format(self.city, self.message))
-                response.update(dict(text=consts.DATA[self.city].get(self.message)))
-                self.log("Updated to response dict. Currently looks like: {}".format(response))
+        # if self.message in consts.GREETINGS:
+        #     response.update(dict(text=consts.BOT_MSGS["start"]))
+        #     quick_reply_list = list(dict(content_type="text", title=city, payload=city) for city in consts.DATA.keys())
+        #     response.update(dict(quick_replies=quick_reply_list))
+        #
+        # elif self.is_quick_reply:
+        #     # if self.payload in consts.DATA.keys():
+        #     if self.payload in consts.DATA.keys():
+        #         print("Clicked on a city quick reply button ", self.message)
+        #         response.update(dict(text=consts.BOT_MSGS["info"]))
+        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
+        #         quick_reply_list = list(dict(content_type="text", title=info, payload="info")
+        #                                 for info in consts.DATA[self.message].keys())
+        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
+        #         response.update(dict(quick_replies=quick_reply_list))
+        #
+        #     elif self.payload == u'info':
+        #         print("Clicked on an info quick reply button ", self.message)
+        #         self.log("self.city is {}, self.message is {}".format(self.city, self.message))
+        #         response.update(dict(text=consts.DATA[self.city].get(self.message)))
+        #         self.log("Updated to response dict. Currently looks like: {}".format(response))
 
         return response
 

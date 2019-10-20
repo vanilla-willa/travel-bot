@@ -1,0 +1,52 @@
+1. Create virtual environment: python3 -m venv venv
+
+2. Activate the virtual environment: source venv/bin/activate
+
+3. git clone https://github.com/hartleybrody/fb-messenger-bot
+
+4. pip install -r requirements.txt
+
+5. Create a Heroku account, if it doesn't already exist.
+
+6. Install Heroku CLI Toolbelt using Homebrew:
+   brew tap heroku/brew && brew install heroku
+   Otherwise, follow: https://devcenter.heroku.com/articles/heroku-cli
+
+7. Track changes in git
+   git init
+   git add
+   git commit -m "initial commit"
+
+8. See compatible python runtimes: https://devcenter.heroku.com/articles/python-support#supported-runtimes
+   At the time of writing, Heroku deployment with Python only allowed python-3.7.4, python-3.6.9, python-2.7.16.
+   Current webhook requirement uses wsgiref==0.1.2, which is not compatible with python3.
+   See https://github.com/skoczen/will/issues/148 Update runtime.txt to the latest python2 support: python-2.7.16.
+
+9. Create Heroku remotes: https://devcenter.heroku.com/articles/git
+   a. To create a new Heroku app (assigns a randomized name):
+      heroku create
+   b. Check remote Heroku repositories were set:
+      git remote -v
+   c. Go to Heroku Dashboard and update the name to something that makes more sense:
+      Then run:
+      git remote rm heroku
+      heroku git:remote -a [newname]
+
+10. To add local repository to existing Heroku app:
+    heroku git:remote -a floating-taiga-21700
+
+11. To verify that Heroku can run things locally on your machine, start your local server with: heroku local
+
+12. Launch http://localhost:5000/. Success should show “Hello world” on the page. Kill the local server with Ctrl+C.
+
+13. To deploy this endpoint to Heroku: git push heroku master
+
+14. If deployment comes up with errors, check for failed build logs in Heroku Dashboard > app_name > Activity.
+    Click on View build log.
+    Note: The #1 issue is getting an error when trying to add the heroku endpoint to the Facebook application when setting
+          the callback URL to the heroku URL.
+          This means heroku config values were not set up properly.
+          Run heroku config
+          Check token VERIFY_TOKEN has been set and that it's the same as the Facebook Verify Token parameter.
+
+15. Check success of deployment: heroku open

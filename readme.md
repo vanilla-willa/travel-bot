@@ -4,8 +4,15 @@ Python template using Flask to build webhook for Facebook's Messenger Bot API cl
 Tutorial from https://blog.hartleybrody.com/fb-messenger-bot/.
 
 # About
-Chatbot to give user information about their travel lodging.
+Chatbot to give user information about their travel lodging by clicking on quick reply buttons.
 
 Inspired by my upcoming trip to China.
 
-My first time making a functional chatbot. Had an similar idea for a hackathon 3-4 years ago scraping with an OpenStreetMap with BeautifulSoup to locate public water fountains, but it was not a functional app.
+(Not currently in production environment)
+
+First time making a functional chatbot. Participated in a hackathon but was not functional, mostly conceptual.
+
+# Future Iterations
+Current iteration uses hard coded data in a nested dictionary structure.
+
+Future iterations include using a linked list for conversation logic, implementing a greet button, supporting text replies instead of only quick replies.
